@@ -38,11 +38,11 @@ The core of the plugin supports the following arguments:
 
 Example:
 ```
-	reauth {
-		path /
-		except /public
-		except /not_so_secret
-	}
+        reauth {
+          path /
+          except /public
+          except /not_so_secret
+        }
 ```
 
 Along with these two arguments you are required to specify at least one backend.
@@ -55,7 +55,7 @@ This is the simplest plugin, taking just a list of username=password[,username=p
 
 Example:
 ```
-	simple user1=password1,user2=password2
+        simple user1=password1,user2=password2
 ```
 
 ### Upstream
@@ -74,7 +74,7 @@ Parameters for this backend:
 
 Example
 ```
-	upstream url=https://google.com,skipverify=true,timeout=5s
+        upstream url=https://google.com,skipverify=true,timeout=5s
 ```
 
 ### Refresh
@@ -97,13 +97,13 @@ Example
 
 Caddyfile
 ```
-	refresh url=https://example.com,skipverify=true,timeout=5s,lifewindow=3h,cleanwindow=1s
+        refresh url=https://example.com,skipverify=true,timeout=5s,lifewindow=3h,cleanwindow=1s
 ```
 
 Secrets
 ```
 reauth:
-	authorization: true                                 # authorization bool (required) - whether to check for Authorization header,
+  authorization: true                                 # authorization bool (required) - whether to check for Authorization header,
                                                           Authorization access token stored in 'ResultsMap' under 'client_token' key
   endpoints                                           # endpoints array (required)
     - name: refresh                                   # endpoint of name 'refresh' (required)
@@ -114,7 +114,7 @@ reauth:
         - key: grant_type
           value: refresh_token
         - key: refresh_token                          # object with 'refresh_token' key (required)
-					value: <refresh token to get access token>  # value (required) - holds actual refresh token to request access token with
+          value: <refresh token to get access token>  # value (required) - holds actual refresh token to request access token with
       cachekey: refresh_token
       headers:
         - key: Content-Type
@@ -124,12 +124,12 @@ reauth:
       responsekey: jwt_token
       failures:
         - validation: equals                          # there are 3 types of validation, 'equals' will have auth fail if
-					key: message                                # response body value under failure object key equals failure object value
+          key: message                                # response body value under failure object key equals failure object value
           value: Forbidden
-					valuemessage: false
+          valuemessage: false
           message: "Refresh access token failed"
                                                       # access token is stored in 'ResultsMap' under 'refresh' key
-																											
+                                                      
     - name: security_context                          # endpoint responses get stored in 'ResultsMap' under the name of the endpoint
       url: https://different.example.com              # url value should be set if endpoint uses different url than one in Caddyfile
       path: "/security_context"                       # path is concatenated after url for request 
@@ -148,13 +148,13 @@ reauth:
         - validation: presence                        # 'presence' validation will have auth fail if response body has failure object key
           key: error
           value: ~
-					valuemessage: true                          # if valuemessage bool is true, response object value under failure object key
+          valuemessage: true                          # if valuemessage bool is true, response object value under failure object key
           message: "Security context error: "             is concatenated to failure message
-				- validataion: status                         # 'status' validation will have auth fail if endpoint response status
-					key: ~                                          matches failure object value
-					value: 401
-					valuemessage: false
-					message: "Security context unauthorized"
+        - validataion: status                         # 'status' validation will have auth fail if endpoint response status
+          key: ~                                          matches failure object value
+          value: 401
+          valuemessage: false
+          message: "Security context unauthorized"
   resultkey: security_context                         # last response in endpoint request chain is stored under the value of 'resultkey'
 ```
 
@@ -173,13 +173,13 @@ Parameters for this backend:
 
 Example
 ```
-	gitlab url=https://gitlab.example.com,skipverify=true,timeout=5s
+  gitlab url=https://gitlab.example.com,skipverify=true,timeout=5s
 ```
 
 Example of logging in via gitlab-ci.yml
 
 ```
-	docker login docker.example.com -u "$CI_PROJECT_PATH" -p "$CI_BUILD_TOKEN"
+  docker login docker.example.com -u "$CI_PROJECT_PATH" -p "$CI_BUILD_TOKEN"
 ```
 
 ## Failure handlers
@@ -196,7 +196,7 @@ Parameters for this handler:
 
 Example
 ```
-	failure httpbasic realm=example.org
+  failure httpbasic realm=example.org
 ```
 
 ### Redirect
@@ -212,7 +212,7 @@ Parameters for this handler:
 
 Example
 ```
-	failure redirect target=example.org,code=303
+  failure redirect target=example.org,code=303
 ```
 
 ### Status
@@ -227,7 +227,7 @@ Parameters for this handler:
 
 Example
 ```
-	failure status code=418
+  failure status code=418
 ```
 
 ## Todo
